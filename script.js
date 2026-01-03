@@ -40,17 +40,21 @@ class CubeRender {
     return { x, y };
   }
   drawCube(x, y, z) {
-    let dist = 1.2; //distancefrom camera
-
     this.#points = [
-      [-100, 100],
-      [100, 100],
-      [100, 300],
-      [-100, 300],
+      [-100, 100, 1],
+      [100, 100, 1],
+      [100, 300, 1],
+      [-100, 300, 1],
+
+      [-100, 100, 1.2],
+      [100, 100, 1.2],
+      [100, 300, 1.2],
+      [-100, 300, 1.2],
     ];
 
     this.#strokeConnect = [
       [0, 1, 2, 3],
+      [4,5,6,7],
       [0, 4],
       [1, 5],
       [2, 6],
@@ -61,12 +65,12 @@ class CubeRender {
       this.#points[i][0] = this.zFormula(
         this.#points[i][0],
         this.#points[i][1],
-        dist,
+        this.#points[i][2],
       ).x;
       this.#points[i][1] = this.zFormula(
         this.#points[i][0],
         this.#points[i][1],
-        dist,
+        this.#points[i][2],
       ).y;
       this.#points[i][0] += x - window.innerWidth / 2;
       this.#points[i][1] += y - window.innerHeight / 3;
@@ -79,76 +83,92 @@ class CubeRender {
     ctx.strokeStyle = "lime";
     ctx.fillStyle = "red";
 
-    for (let l = 0; l <= this.#points.length; l++) {
-      if (l > 1) {
-        ctx.fillStyle = "green";
-      }
-      if (!(l == this.#points.length)) {
-        // ctx.fillRect(this.#points[l][0], this.#points[l][1],10,10);
-        ctx.fillRect(
-          this.zFormula(this.#points[1][0], this.#points[1][1], dist).x,
-          this.zFormula(this.#points[1][0], this.#points[1][1], dist).y,
-          10,
-          10,
-        );
-        ctx.fillRect(
-          this.zFormula(this.#points[2][0], this.#points[2][1], dist).x,
-          this.zFormula(this.#points[2][0], this.#points[2][1], dist).y,
-          10,
-          10,
-        );
-        ctx.fillRect(
-          this.zFormula(this.#points[3][0], this.#points[3][1], dist).x,
-          this.zFormula(this.#points[3][0], this.#points[3][1], dist).y,
-          10,
-          10,
-        );
-        ctx.fillRect(
-          this.zFormula(this.#points[0][0], this.#points[0][1], dist).x,
-          this.zFormula(this.#points[0][0], this.#points[0][1], dist).y,
-          10,
-          10,
-        );
-        dist += 0.1;
+    // show dots
+    // for (let l = 0; l <= this.#points.length - 1; l++) {
+    //   if (l > 3) {
+    //     ctx.fillStyle = "green";
+    //   }
 
-        // console.log(dist)
-      } else {
-        // ctx.fillRect(this.#points[0][0], this.#points[0][1],10,10);
-      }
-    }
-    console.log(this.zFormula(this.#points[0][0], this.#points[0][1], dist).x);
+    //   ctx.fillRect(
+    //     this.zFormula(
+    //       this.#points[l][0],
+    //       this.#points[l][1],
+    //       this.#points[l][2],
+    //     ).x,
+    //     this.zFormula(
+    //       this.#points[l][0],
+    //       this.#points[l][1],
+    //       this.#points[l][2],
+    //     ).y,
+    //     10,
+    //     10,
+    //   );
+    // }
+
+    console.log(
+      this.zFormula(this.#points[0][0], this.#points[0][1], this.#points[0][2])
+        .x,
+    );
 
     for (let s = 0; s <= this.#strokeConnect.length - 1; s++) {
       if (!(s == this.#strokeConnect))
         for (let t = 0; t <= this.#strokeConnect[s].length - 1; t++) {
-      if (!(t == this.#strokeConnect[s].length -1)){
-          console.log(t)
-
-          let drawLine1 = {
-            x: this.zFormula(this.#points[t][0], this.#points[t][1], dist).x,
-            y: this.zFormula(this.#points[t][0], this.#points[t][1], dist).y,
-          };
-          let drawLine2 = {
-            x: this.zFormula(this.#points[t + 1][0],this.#points[t + 1][1],dist).x,
-            y: this.zFormula(this.#points[t + 1][0],this.#points[t + 1][1],dist).y,
-          };
-          this.drawStroke(drawLine1, drawLine2);
-          
+          console.log(t);
+          if (!(t == this.#strokeConnect[s].length - 1)) {
+            let drawLine1 = {
+              x: this.zFormula(
+                this.#points[this.#strokeConnect[s][t]][0],
+                this.#points[this.#strokeConnect[s][t]][1],
+                this.#points[this.#strokeConnect[s][t]][2],
+              ).x,
+              y: this.zFormula(
+                this.#points[this.#strokeConnect[s][t]][0],
+                this.#points[this.#strokeConnect[s][t]][1],
+                this.#points[this.#strokeConnect[s][t]][2],
+              ).y,
+            };
+            let drawLine2 = {
+              x: this.zFormula(
+                this.#points[this.#strokeConnect[s][t + 1]][0],
+                this.#points[this.#strokeConnect[s][t + 1]][1],
+                this.#points[this.#strokeConnect[s][t + 1]][2],
+              ).x,
+              y: this.zFormula(
+                this.#points[this.#strokeConnect[s][t + 1]][0],
+                this.#points[this.#strokeConnect[s][t + 1]][1],
+                this.#points[this.#strokeConnect[s][t + 1]][2],
+              ).y,
+            };
+            this.drawStroke(drawLine1, drawLine2);
+          } else {
+            let drawLine1 = {
+              x: this.zFormula(
+                this.#points[this.#strokeConnect[s][t]][0],
+                this.#points[this.#strokeConnect[s][t]][1],
+                this.#points[this.#strokeConnect[s][t]][2],
+              ).x,
+              y: this.zFormula(
+                this.#points[this.#strokeConnect[s][t]][0],
+                this.#points[this.#strokeConnect[s][t]][1],
+                this.#points[this.#strokeConnect[s][t]][2],
+              ).y,
+            };
+            let endLine = {
+              x: this.zFormula(
+                this.#points[this.#strokeConnect[s][0]][0],
+                this.#points[this.#strokeConnect[s][0]][1],
+                this.#points[this.#strokeConnect[s][0]][2],
+              ).x,
+              y: this.zFormula(
+                this.#points[this.#strokeConnect[s][0]][0],
+                this.#points[this.#strokeConnect[s][0]][1],
+                this.#points[this.#strokeConnect[s][0]][2],
+              ).y,
+            };
+            this.drawStroke(drawLine1, endLine);
+          }
         }
-        else{
-          let drawLine1 = {
-            x: this.zFormula(this.#points[t][0], this.#points[t][1], dist).x,
-            y: this.zFormula(this.#points[t][0], this.#points[t][1], dist).y,
-          };
-          let endLine = {
-            x: this.zFormula(this.#points[0][0], this.#points[0][1], dist).x,
-            y: this.zFormula(this.#points[0][0], this.#points[0][1], dist).y,
-          };
-          this.drawStroke(drawLine1, endLine);
-        }
-        
-        }
-      console.log("work");
+      console.log("==============");
     }
   }
 
