@@ -2,14 +2,32 @@ const canvas = document.getElementById("cont");
 const ctx = canvas.getContext("2d");
 canvasInitialize();
 
+class Meth{
+  sin(num) {
+    return Math.sin(num * Math.PI/180);
+  }
+  cos(num) {
+    return Math.cos(num * Math.PI/180);
+  }
+  tan(num) {
+    return Math.tan(num * Math.PI/180);
+  }
+}
+const meth = new Meth();
+
+const viewPort = {
+  x: 500,
+  y: 500,
+};
+
 const screenCenter = {
   x: window.innerWidth / 2,
   y: -window.innerHeight / 2,
 };
 
 function canvasInitialize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = 1000;
+  canvas.height = 1000;
   canvas.style.backgroundColor = "#121212";
   canvas.style.border = "3px white solid";
 }
@@ -19,47 +37,73 @@ class CubeRender {
   #pos;
 
   constructor() {
-    // this.#pos = [screenCenter.x, screenCenter.y];
     document.addEventListener("mousedown", (event) => {
       // ctx.clearRect(0,0,window.innerWidth,window.innerHeight)
       const mouseX = event.clientX;
       const mouseY = event.clientY;
+      this.#pos = [canvas.width / 2, canvas.height / 2];
       this.#pos = [mouseX, mouseY];
       ctx.setTransform(1, 0, 0, 1, this.#pos[0], this.#pos[1]);
       this.drawCube(this.#pos[0], this.#pos[1], 1);
-      // this.drawStroke();
       console.log(this.#pos);
-      // ctx.restore()
     });
   }
+
+  normalized(x, y, z) {
+    x = x * (canvas.width - 0) + 0;
+    y = y * (canvas.height - 0) + 0;
+    z = z * (canvas.height * 0.01 - 1) + 1;
+    // z = z*((canvas.height*0.01)-1)+1
+    return { x, y, z };
+  }
+
   zFormula(x, y, z) {
     x = x / z;
     y = y / z;
-    y = -y;
-    x = -x;
+    // y = -y;
+    // x = -x;
     return { x, y };
   }
-  drawCube(x, y, z) {
+  drawCube(x, y) {
     this.#points = [
-      [-100, 100, 1],
-      [100, 100, 1],
-      [100, 300, 1],
-      [-100, 300, 1],
+      [-0.3, 0.3, 0.31],
+      [0.3, 0.3, 0.31],
+      [0.3, -0.3, 0.31],
+      [-0.3, -0.3, 0.31],
 
-      [-100, 100, 1.2],
-      [100, 100, 1.2],
-      [100, 300, 1.2],
-      [-100, 300, 1.2],
+      [-0.3, 0.3, 0.42],
+      [0.3, 0.3, 0.42],
+      [0.3, -0.3, 0.42],
+      [-0.3, -0.3, 0.42],
     ];
 
     this.#strokeConnect = [
       [0, 1, 2, 3],
-      [4,5,6,7],
+      [4, 5, 6, 7],
       [0, 4],
       [1, 5],
       [2, 6],
       [3, 7],
     ];
+
+    for (let n in this.#points) {
+      console.log("norm");
+      this.#points[n][0] = this.normalized(
+        this.#points[n][0],
+        this.#points[n][1],
+        this.#points[n][2],
+      ).x;
+      this.#points[n][1] = this.normalized(
+        this.#points[n][0],
+        this.#points[n][1],
+        this.#points[n][2],
+      ).y;
+      this.#points[n][2] = this.normalized(
+        this.#points[n][0],
+        this.#points[n][1],
+        this.#points[n][2],
+      ).z;
+    }
 
     for (let i in this.#points) {
       this.#points[i][0] = this.zFormula(
@@ -72,8 +116,8 @@ class CubeRender {
         this.#points[i][1],
         this.#points[i][2],
       ).y;
-      this.#points[i][0] += x - window.innerWidth / 2;
-      this.#points[i][1] += y - window.innerHeight / 3;
+      this.#points[i][0] += x - viewPort.x;
+      this.#points[i][1] += y - viewPort.y;
       this.#points[i][1] = this.#points[i][1];
     }
 
@@ -82,6 +126,7 @@ class CubeRender {
 
     ctx.strokeStyle = "lime";
     ctx.fillStyle = "red";
+
 
     // show dots
     // for (let l = 0; l <= this.#points.length - 1; l++) {
@@ -113,7 +158,6 @@ class CubeRender {
     for (let s = 0; s <= this.#strokeConnect.length - 1; s++) {
       if (!(s == this.#strokeConnect))
         for (let t = 0; t <= this.#strokeConnect[s].length - 1; t++) {
-          console.log(t);
           if (!(t == this.#strokeConnect[s].length - 1)) {
             let drawLine1 = {
               x: this.zFormula(
@@ -168,7 +212,6 @@ class CubeRender {
             this.drawStroke(drawLine1, endLine);
           }
         }
-      console.log("==============");
     }
   }
 
@@ -180,5 +223,11 @@ class CubeRender {
   }
 }
 
+
+
 const cr = new CubeRender();
 cr;
+
+console.log(meth.cos(30));
+ctx.fillStyle = 'red'
+    ctx.fillRect(canvas.width/2, canvas.height/2, 10, 10);
