@@ -2,23 +2,18 @@ const canvas = document.getElementById("cont");
 const ctx = canvas.getContext("2d");
 canvasInitialize();
 
-class Meth{
+class Meth {
   sin(num) {
-    return Math.sin(num * Math.PI/180);
+    return Math.sin((num * Math.PI) / 180);
   }
   cos(num) {
-    return Math.cos(num * Math.PI/180);
+    return Math.cos((num * Math.PI) / 180);
   }
   tan(num) {
-    return Math.tan(num * Math.PI/180);
+    return Math.tan((num * Math.PI) / 180);
   }
 }
 const meth = new Meth();
-
-const viewPort = {
-  x: 500,
-  y: 500,
-};
 
 const screenCenter = {
   x: window.innerWidth / 2,
@@ -32,62 +27,48 @@ function canvasInitialize() {
   canvas.style.border = "3px white solid";
 }
 class CubeRender {
+  #viewPort;
   #points;
   #strokeConnect;
   #pos;
+  #strokeColor
 
-  constructor() {
-    document.addEventListener("mousedown", (event) => {
-      // ctx.clearRect(0,0,window.innerWidth,window.innerHeight)
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-      this.#pos = [canvas.width / 2, canvas.height / 2];
-      this.#pos = [mouseX, mouseY];
-      ctx.setTransform(1, 0, 0, 1, this.#pos[0], this.#pos[1]);
-      this.drawCube(this.#pos[0], this.#pos[1], 1);
-      console.log(this.#pos);
-    });
+  constructor() {}
+
+  draw(position, viewPort, points, strokeConnect) {
+    this.#points = points;
+    this.#pos = position;
+    this.#viewPort = viewPort;
+    this.#strokeConnect = strokeConnect;
+
+    this.#pos.x += canvas.width / 2;
+    this.#pos.y += canvas.height / 2;
+
+    
+    ctx.setTransform(1, 0, 0, 1, this.#pos.x, this.#pos.y);
+    this.drawPoint(this.#pos.x, this.#pos.y);
+    console.log(this.#pos);
+
+  }
+
+  color(color){
+    this.#strokeColor = color
   }
 
   normalized(x, y, z) {
     x = x * (canvas.width - 0) + 0;
     y = y * (canvas.height - 0) + 0;
     z = z * (canvas.height * 0.01 - 1) + 1;
-    // z = z*((canvas.height*0.01)-1)+1
     return { x, y, z };
   }
 
   zFormula(x, y, z) {
     x = x / z;
     y = y / z;
-    // y = -y;
-    // x = -x;
     return { x, y };
   }
-  drawCube(x, y) {
-    this.#points = [
-      [-0.3, 0.3, 0.31],
-      [0.3, 0.3, 0.31],
-      [0.3, -0.3, 0.31],
-      [-0.3, -0.3, 0.31],
-
-      [-0.3, 0.3, 0.42],
-      [0.3, 0.3, 0.42],
-      [0.3, -0.3, 0.42],
-      [-0.3, -0.3, 0.42],
-    ];
-
-    this.#strokeConnect = [
-      [0, 1, 2, 3],
-      [4, 5, 6, 7],
-      [0, 4],
-      [1, 5],
-      [2, 6],
-      [3, 7],
-    ];
-
+  drawPoint(x, y) {
     for (let n in this.#points) {
-      console.log("norm");
       this.#points[n][0] = this.normalized(
         this.#points[n][0],
         this.#points[n][1],
@@ -116,17 +97,15 @@ class CubeRender {
         this.#points[i][1],
         this.#points[i][2],
       ).y;
-      this.#points[i][0] += x - viewPort.x;
-      this.#points[i][1] += y - viewPort.y;
-      this.#points[i][1] = this.#points[i][1];
+      this.#points[i][0] -= this.#viewPort.x;
+      this.#points[i][1] += this.#viewPort.y;
+      this.#points[i][1] = -this.#points[i][1];
     }
 
     ctx.beginPath();
-    console.log(this.#points);
 
-    ctx.strokeStyle = "lime";
+    ctx.strokeStyle = this.#strokeColor;
     ctx.fillStyle = "red";
-
 
     // show dots
     // for (let l = 0; l <= this.#points.length - 1; l++) {
@@ -149,11 +128,6 @@ class CubeRender {
     //     10,
     //   );
     // }
-
-    console.log(
-      this.zFormula(this.#points[0][0], this.#points[0][1], this.#points[0][2])
-        .x,
-    );
 
     for (let s = 0; s <= this.#strokeConnect.length - 1; s++) {
       if (!(s == this.#strokeConnect))
@@ -223,11 +197,39 @@ class CubeRender {
   }
 }
 
-
-
 const cr = new CubeRender();
-cr;
 
-console.log(meth.cos(30));
-ctx.fillStyle = 'red'
-    ctx.fillRect(canvas.width/2, canvas.height/2, 10, 10);
+
+ctx.fillStyle = "red";
+ctx.fillRect(500, 500, 10, 10);
+
+cr.color('lime')
+cr.draw(
+  { x: -200, y: 100 },
+  { x: 300, y: 0 },
+  [
+    [-0.3, 0.3, 0.11],
+    [0.3, 0.3, 0.11],
+    [0.3, -0.3, 0.11],
+    [-0.3, -0.3, 0.11],
+
+    [-0.3, 0.3, 0.22],
+    [0.3, 0.3, 0.22],
+    [0.3, -0.3, 0.22],
+    [-0.3, -0.3, 0.22],
+
+    [0.3, 0.7, 0.2],
+    [-0.3, 0.7, 0.2],
+  ],
+  [
+    [0, 1, 2, 3],
+    [4, 5, 6, 7],
+    [0, 4],
+    [1, 5],
+    [2, 6],
+    [3, 7],
+    [8, 9],
+    [1, 8, 5],
+    [0, 9, 4],
+  ],
+);
