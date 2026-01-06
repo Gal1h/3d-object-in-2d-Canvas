@@ -29,7 +29,7 @@ import {Flat3D} from 'flat3d'
 ```
 
 ```javascript
-
+const fd = new Flat3D
 fd.init("canvasID");    //initialize canvas id
 fd.color("lime");   //set line color
 
