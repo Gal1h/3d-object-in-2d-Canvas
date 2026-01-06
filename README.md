@@ -25,6 +25,10 @@ Install Flat3D with npm
 ## Usage/Examples
 
 ```javascript
+import {Flat3D} from 'flat3d'
+```
+
+```javascript
 
 fd.init("canvasID");    //initialize canvas id
 fd.color("lime");   //set line color
