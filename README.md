@@ -24,8 +24,15 @@ Install Flat3D with npm
 
 ## Usage/Examples
 
+HTML
+```html
+<canvas id="cont"> </canvas> //your canvas
+<script type="module" src="script.js"></script> //use import here 
+```
+
+JavaScript
 ```javascript
-import {Flat3D} from 'flat3d'
+import {Flat3D} from 'https://cdn.jsdelivr.net/npm/flat3d@1.1.5'
 ```
 
 ```javascript
