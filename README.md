@@ -2,16 +2,6 @@
 # Flat3D
 
 Tools for HTML canvas that can make 3D view object in 2D
- 
-
-
-## Installation
-
-Install Flat3D with npm
-
-```bash
-  npm install flat3d
-```
     
 ## Function
 
