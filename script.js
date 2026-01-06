@@ -1,6 +1,5 @@
-const canvas = document.getElementById("cont");
-const ctx = canvas.getContext("2d");
-canvasInitialize();
+let canvas;
+let ctx;
 
 class Meth {
   sin(num) {
@@ -15,25 +14,25 @@ class Meth {
 }
 const meth = new Meth();
 
-const screenCenter = {
-  x: window.innerWidth / 2,
-  y: -window.innerHeight / 2,
-};
-
-function canvasInitialize() {
-  canvas.width = 1000;
-  canvas.height = 1000;
-  canvas.style.backgroundColor = "#121212";
-  canvas.style.border = "3px white solid";
-}
-class CubeRender {
+class Flat3D {
   #viewPort;
   #points;
   #strokeConnect;
   #pos;
-  #strokeColor
+  #strokeColor;
 
   constructor() {}
+  init(context) {
+    canvas = document.getElementById(context);
+    ctx = canvas.getContext("2d");
+    console.log(context);
+
+
+    canvas.width = 1000;
+    canvas.height = 1000;
+    canvas.style.backgroundColor = "#121212";
+    canvas.style.border = "3px white solid";
+  }
 
   draw(position, viewPort, points, strokeConnect) {
     this.#points = points;
@@ -44,15 +43,13 @@ class CubeRender {
     this.#pos.x += canvas.width / 2;
     this.#pos.y += canvas.height / 2;
 
-    
     ctx.setTransform(1, 0, 0, 1, this.#pos.x, this.#pos.y);
     this.drawPoint(this.#pos.x, this.#pos.y);
     console.log(this.#pos);
-
   }
 
-  color(color){
-    this.#strokeColor = color
+  color(color) {
+    this.#strokeColor = color;
   }
 
   normalized(x, y, z) {
@@ -197,39 +194,6 @@ class CubeRender {
   }
 }
 
-const cr = new CubeRender();
 
+export default { Flat3D }
 
-ctx.fillStyle = "red";
-ctx.fillRect(500, 500, 10, 10);
-
-cr.color('lime')
-cr.draw(
-  { x: -200, y: 100 },
-  { x: 300, y: 0 },
-  [
-    [-0.3, 0.3, 0.11],
-    [0.3, 0.3, 0.11],
-    [0.3, -0.3, 0.11],
-    [-0.3, -0.3, 0.11],
-
-    [-0.3, 0.3, 0.22],
-    [0.3, 0.3, 0.22],
-    [0.3, -0.3, 0.22],
-    [-0.3, -0.3, 0.22],
-
-    [0.3, 0.7, 0.2],
-    [-0.3, 0.7, 0.2],
-  ],
-  [
-    [0, 1, 2, 3],
-    [4, 5, 6, 7],
-    [0, 4],
-    [1, 5],
-    [2, 6],
-    [3, 7],
-    [8, 9],
-    [1, 8, 5],
-    [0, 9, 4],
-  ],
-);
