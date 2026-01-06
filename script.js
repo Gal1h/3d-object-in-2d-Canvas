@@ -1,20 +1,20 @@
 let canvas;
 let ctx;
 
-class Meth {
-  sin(num) {
-    return Math.sin((num * Math.PI) / 180);
-  }
-  cos(num) {
-    return Math.cos((num * Math.PI) / 180);
-  }
-  tan(num) {
-    return Math.tan((num * Math.PI) / 180);
-  }
-}
-const meth = new Meth();
+// class Meth {
+//   sin(num) {
+//     return Math.sin((num * Math.PI) / 180);
+//   }
+//   cos(num) {
+//     return Math.cos((num * Math.PI) / 180);
+//   }
+//   tan(num) {
+//     return Math.tan((num * Math.PI) / 180);
+//   }
+// }
+// const meth = new Meth();
 
-class Flat3D {
+export class Flat3D {
   #viewPort;
   #points;
   #strokeConnect;
@@ -195,5 +195,4 @@ class Flat3D {
 }
 
 
-export default { Flat3D }
 
