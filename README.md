@@ -24,7 +24,7 @@ HTML
 
 JavaScript
 ```javascript
-import {Flat3D} from 'https://cdn.jsdelivr.net/npm/flat3d@1.1.5'
+import {Flat3D} from 'https://cdn.jsdelivr.net/npm/flat3d@1.1.6'
 ```
 
 ```javascript
