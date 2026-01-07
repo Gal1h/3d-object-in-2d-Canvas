@@ -7,9 +7,11 @@ Tools for HTML canvas that can make 3D view object in 2D
 
 | Method             | Description                                                                |
 | ----------------- | ------------------------------------------------------------------ |
-| init() | initialize canvas ID |
+| init() | initialize canvas ID, size, and background color |
 | color() | set line color |
 | draw() | generate the object |
+| clear() | clear the canvas |
+
 
 
 ## Usage/Examples
@@ -27,7 +29,7 @@ import {Flat3D} from 'https://cdn.jsdelivr.net/npm/flat3d@1.1.5'
 
 ```javascript
 const fd = new Flat3D
-fd.init("canvasID");    //initialize canvas id
+fd.init("canvasID", 1000, "gray");    //initialize (canvas ID, size, color)
 fd.color("lime");   //set line color
 
 fd.draw(
