@@ -63,7 +63,7 @@ fd.draw(
 );
 ```
 
-##Install via NPM
+## Install via NPM
 
 ```bash
 npm install flat3d
